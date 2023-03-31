@@ -12,6 +12,7 @@ CollaboratorSchema.virtual("album", {
   localField: "albumId",
   foreignField: "_id",
   ref: "Album",
+  justOne: true,
 });
 
 CollaboratorSchema.virtual("profile", {
