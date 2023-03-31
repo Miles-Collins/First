@@ -1,4 +1,4 @@
-import { dbContext } from '../db/DbContext'
+import { dbContext } from "../db/DbContext";
 
 // Private Methods
 
@@ -9,16 +9,16 @@ import { dbContext } from '../db/DbContext'
  */
 async function createAccountIfNeeded(account, user) {
   if (!account) {
-    user._id = user.id
-    if(typeof user.name == 'string' && user.name.includes('@')){
-      user.name = user.nickname
+    user._id = user.id;
+    if (typeof user.name == "string" && user.name.includes("@")) {
+      user.name = user.nickname;
     }
     account = await dbContext.Account.create({
       ...user,
-      subs: [user.sub]
-    })
+      subs: [user.sub],
+    });
   }
-  return account
+  return account;
 }
 
 /**
@@ -29,8 +29,8 @@ async function createAccountIfNeeded(account, user) {
 async function mergeSubsIfNeeded(account, user) {
   if (!account.subs.includes(user.sub)) {
     // @ts-ignore
-    account.subs.push(user.sub)
-    await account.save()
+    account.subs.push(user.sub);
+    await account.save();
   }
 }
 /**
@@ -40,9 +40,9 @@ async function mergeSubsIfNeeded(account, user) {
 function sanitizeBody(body) {
   const writable = {
     name: body.name,
-    picture: body.picture
-  }
-  return writable
+    picture: body.picture,
+  };
+  return writable;
 }
 
 class AccountService {
@@ -56,11 +56,11 @@ class AccountService {
    */
   async getAccount(user) {
     let account = await dbContext.Account.findOne({
-      _id: user.id
-    })
-    account = await createAccountIfNeeded(account, user)
-    await mergeSubsIfNeeded(account, user)
-    return account
+      _id: user.id,
+    });
+    account = await createAccountIfNeeded(account, user);
+    await mergeSubsIfNeeded(account, user);
+    return account;
   }
 
   /**
@@ -69,13 +69,13 @@ class AccountService {
    *  @param {any} body Updates to apply to user object
    */
   async updateAccount(user, body) {
-    const update = sanitizeBody(body)
+    const update = sanitizeBody(body);
     const account = await dbContext.Account.findOneAndUpdate(
       { _id: user.id },
       { $set: update },
       { runValidators: true, setDefaultsOnInsert: true, new: true }
-    )
-    return account
+    );
+    return account;
   }
 }
-export const accountService = new AccountService()
+export const accountService = new AccountService();
