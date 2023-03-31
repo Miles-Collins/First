@@ -1,0 +1,16 @@
+
+  {
+    "name": "first",
+    "version": "1.0.0",
+    "scripts": {
+      "build": "npm run setup:server",
+      "setup:app": "npm run setup:server && npm run setup:client",
+      "setup:client": "cd First.client && npm i",
+      "setup:server": "cd First && npm i",
+      "start": "node First/index.js"
+    },
+    "engines": {
+      "node": "^18.12.1"
+    }
+  }
+  
